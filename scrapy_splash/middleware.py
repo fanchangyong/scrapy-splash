@@ -257,6 +257,12 @@ class SplashMiddleware(object):
         if 'splash' not in request.meta:
             return
 
+        if 'proxy' in request.meta:
+            if 'args' not in request.meta['splash']:
+                request.meta['splash']['args'] = {}
+            request.meta['splash']['args']['proxy'] = request.meta['proxy']
+            del request.meta['proxy']
+
         if request.method not in {'GET', 'POST'}:
             logger.warn(
                 "Currently only GET and POST requests are supported by "
